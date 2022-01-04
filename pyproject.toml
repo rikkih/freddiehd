@@ -8,6 +8,7 @@ authors = ["Rikki Hodder <rikkih@protonmail.com>"]
 python = "^3.9"
 Django = "^4.0"
 python-dotenv = "^0.19.2"
+mypy = "^0.930"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

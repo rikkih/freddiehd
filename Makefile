@@ -17,3 +17,6 @@ lint:
 #TODO: Add in coverage limits.
 test:
 	@poetry run python -m pytest tests
+
+tree:
+	@tree -a -I ".mypy_cache|.git"
