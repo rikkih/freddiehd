@@ -1,4 +1,4 @@
-.PHONY: check clean lint test
+.PHONY: check clean diff-clean lint local test
 
 dev-requirements:
 	@echo "Installing poetry on default Python interpreter"
@@ -6,13 +6,21 @@ dev-requirements:
 
 check:
 	@poetry run python -m mypy .
+	@poetry run pyflakes .
 
 clean:
 	@echo "Removing cache files..."
 	@find . -name "__pycache__" -print0 | xargs -0 rm -rf
 
+diff-clean:
+	@git diff -- . ':(exclude)poetry.lock'
+
 lint:
 	@poetry run python -m black .
+
+local:
+	@echo "Spawning app on local development Python server..."
+	@poetry run python manage.py runserver
 
 #TODO: Add in coverage limits.
 test:
