@@ -16,6 +16,7 @@ diff-clean:
 	@git diff -- . ':(exclude)poetry.lock'
 
 lint:
+	@poetry run isort .
 	@poetry run python -m black .
 
 local:
