@@ -23,9 +23,12 @@ local:
 	@echo "Spawning app on local development Python server..."
 	@poetry run python manage.py runserver
 
+shell:
+	@poetry run python manage.py shell
+
 #TODO: Add in coverage limits.
 test:
-	@poetry run python -m pytest tests
+	@poetry run pytest polls
 
 tree:
 	@tree -a -I ".mypy_cache|.git"

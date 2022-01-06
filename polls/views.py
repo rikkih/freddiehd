@@ -1,5 +1,5 @@
 from django.db.models import F
-from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
@@ -17,28 +17,12 @@ class IndexView(generic.ListView):
 
 class DetailView(generic.DetailView):
     model = Question
-    template_name = 'polls/detail.html'
+    template_name = "polls/detail.html"
 
 
 class ResultsView(generic.DetailView):
     model = Question
-    template_name = 'polls/results.html'
-
-
-def index(request: HttpRequest) -> HttpResponse:
-    latest_questions = Question.objects.order_by("-pub_date")[:5]
-    context = {"latest_questions": latest_questions}
-    return render(request, "polls/index.html", context)
-
-
-def detail(request: HttpRequest, question_id: int) -> HttpResponse:
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/detail.html", {"question": question})
-
-
-def results(request: HttpRequest, question_id: int) -> HttpResponse:
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/results.html", {"question": question})
+    template_name = "polls/results.html"
 
 
 def vote(request: HttpRequest, question_id: int) -> HttpResponse:
@@ -49,13 +33,9 @@ def vote(request: HttpRequest, question_id: int) -> HttpResponse:
         return render(
             request,
             "polls/detail.html",
-            {
-                "question": question,
-                "error_message": "You did not select a choice."
-            },
+            {"question": question, "error_message": "You did not select a choice."},
         )
     else:
         selected_choice.votes = F("votes") + 1
         selected_choice.save()
-        return HttpResponseRedirect(
-            reverse("polls:results", args=(question.id, )))
+        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
