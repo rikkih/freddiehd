@@ -2,8 +2,27 @@ from django.db.models import F
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views import generic
 
 from .models import Choice, Question
+
+
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "latest_questions"
+
+    def get_queryset(self):
+        return Question.objects.order_by("-pub_date")[:5]
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -36,7 +55,7 @@ def vote(request: HttpRequest, question_id: int) -> HttpResponse:
             },
         )
     else:
-        selected_choice.votes = F('votes') + 1
+        selected_choice.votes = F("votes") + 1
         selected_choice.save()
         return HttpResponseRedirect(
             reverse("polls:results", args=(question.id, )))
