@@ -11,6 +11,7 @@ check:
 clean:
 	@echo "Removing cache files..."
 	@find . -name "__pycache__" -print0 | xargs -0 rm -rf
+	@find . -name ".pytest_cache" -print0 | xargs -0 rm -rf
 
 diff-clean:
 	@git diff -- . ':(exclude)poetry.lock'
@@ -26,9 +27,8 @@ local:
 shell:
 	@poetry run python manage.py shell
 
-#TODO: Add in coverage limits.
 test:
-	@poetry run pytest polls
+	@poetry run pytest --cov=polls --cov-fail-under=90 --cov-report=html polls
 
 tree:
 	@tree -a -I ".mypy_cache|.git"
