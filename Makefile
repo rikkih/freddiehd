@@ -1,4 +1,4 @@
-.PHONY: check clean diff-clean lint local test
+.PHONY: check clean dbshell git-diff-clean lint local shell test tree
 
 dev-requirements:
 	@echo "Installing poetry on default Python interpreter"
@@ -13,7 +13,10 @@ clean:
 	@find . -name "__pycache__" -print0 | xargs -0 rm -rf
 	@find . -name ".pytest_cache" -print0 | xargs -0 rm -rf
 
-diff-clean:
+dbshell:
+	@poetry run python manage.py dbshell
+
+git-diff-clean:
 	@git diff -- . ':(exclude)poetry.lock'
 
 lint:
@@ -31,4 +34,4 @@ test:
 	@poetry run pytest --cov=polls --cov-fail-under=90 --cov-report=html polls
 
 tree:
-	@tree -a -I ".mypy_cache|.git"
+	@tree -a -I ".git|htmlcov|.mypy_cache"
